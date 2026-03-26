@@ -4,41 +4,53 @@ const products = [
   {
     id: 1, name: 'Caneca Sanguínea', category: 'canecas',
     price: 59.90, badge: 'best',
-    img: './Imagens/Livro.jpg',
+    img: './Imagens/sanguinia.jpg',
     desc: 'Caneca artística ilustrada com as características da Sanguínea.',
     tag: 'Mais Vendido'
   },
   {
     id: 2, name: 'Caneca Colérica', category: 'canecas',
     price: 59.90, badge: 'new',
-    img: './Imagens/Livro.jpg',
+    img: './Imagens/colerica.jpg',
     desc: 'Caneca artística ilustrada com as características da Colérica.',
     tag: 'Novo'
   },
   {
+    id: 9, name: 'Caneca Fleumática', category: 'canecas',
+    price: 59.90,
+    img: './Imagens/fleumatica.jpg',
+    desc: 'Caneca artística ilustrada com as características da Fleumática.'
+  },
+  {
+    id: 10, name: 'Caneca Melancólica', category: 'canecas',
+    price: 59.90,
+    img: './Imagens/melancolica.jpg',
+    desc: 'Caneca artística ilustrada com as características da Melancólica.'
+  },
+  {
     id: 3, name: 'Print A Sanguínea', category: 'prints',
     price: 49.90, oldPrice: 69.90, badge: 'best',
-    img: './Imagens/Livro.jpg',
+    img: './Imagens/sanguinia.jpg',
     desc: 'Pôster A3 premium da ilustração original A Sanguínea.',
     tag: 'Mais Vendido'
   },
   {
     id: 4, name: 'Print A Colérica', category: 'prints',
     price: 49.90,
-    img: './Imagens/Livro.jpg',
+    img: './Imagens/colerica.jpg',
     desc: 'Pôster A3 premium da ilustração original A Colérica.'
   },
   {
     id: 5, name: 'Print A Fleumática', category: 'prints',
     price: 49.90,
-    img: './Imagens/Livro.jpg',
+    img: './Imagens/fleumatica.jpg',
     desc: 'Pôster A3 premium da ilustração original A Fleumática.'
   },
   {
     id: 6, name: 'Print A Melancólica', category: 'prints',
     price: 49.90,
-    img: './Imagens/Livro.jpg',
-    desc: 'Pôster A3 premium da ilustração original A Melancólica.'
+    img: './Imagens/melancolica.jpg',
+    desc: 'Pôster A3 premium da illustration original A Melancólica.'
   },
   {
     id: 7, name: 'Curso Online: Os 4 Temperamentos', category: 'cursos',
@@ -55,6 +67,7 @@ const products = [
     tag: 'Digital'
   }
 ];
+
 
 const book = {
   title: 'Você, o seu temperamento e um propósito',
