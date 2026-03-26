@@ -143,7 +143,7 @@ function selectPayment(method, el) {
 }
 
 function copyPix() {
-  navigator.clipboard.writeText('contato@robertafazio.com.br')
+  navigator.clipboard.writeText('86998311260')
     .then(() => showToast('Chave PIX copiada! ✓'));
 }
 
@@ -159,8 +159,7 @@ function formatExpiry(input) {
 }
 
 async function confirmOrder() {
-  const method = document.querySelector('input[name="payment-method"]:checked')?.value;
-  if (!method) { showToast('Escolha uma forma de pagamento.'); return; }
+  const method = document.querySelector('input[name="payment-method"]')?.value || 'pix';
 
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const { error } = await _supabase.from('orders').insert([{ items: cart, total, payment_method: method }]);

@@ -54,65 +54,18 @@
         <h2 style="margin-bottom:0.25rem;">Forma de Pagamento</h2>
         <p style="margin-bottom:1.5rem;">Total: <strong id="payment-total-display">R$ 0,00</strong></p>
 
-        <div class="payment-options">
-            <label class="payment-option" onclick="selectPayment('pix', this)">
-                <input type="radio" name="payment-method" value="pix">
-                <span class="material-symbols-outlined">qr_code_2</span>
-                <div><strong>PIX</strong><small>Aprovação imediata</small></div>
-            </label>
-            <label class="payment-option" onclick="selectPayment('credit', this)">
-                <input type="radio" name="payment-method" value="credit">
-                <span class="material-symbols-outlined">credit_card</span>
-                <div><strong>Cartão de Crédito</strong><small>Em até 3x sem juros</small></div>
-            </label>
-            <label class="payment-option" onclick="selectPayment('boleto', this)">
-                <input type="radio" name="payment-method" value="boleto">
-                <span class="material-symbols-outlined">receipt_long</span>
-                <div><strong>Boleto Bancário</strong><small>Vence em 3 dias úteis</small></div>
-            </label>
-        </div>
-
-        <!-- PIX -->
-        <div id="payment-pix" class="payment-detail" style="display:none">
+        <!-- PIX (único método ativo) -->
+        <div id="payment-pix" class="payment-detail" style="display:block">
             <div class="pix-box">
                 <span class="material-symbols-outlined" style="font-size:3rem;color:var(--primary)">qr_code_2</span>
                 <p style="margin:0.5rem 0 0.25rem;font-weight:600;">Chave PIX</p>
-                <div class="pix-key" id="pix-key-display">contato@robertafazio.com.br</div>
+                <div class="pix-key" id="pix-key-display">86998311260</div>
                 <button class="btn-ghost" style="margin-top:0.75rem;padding:0.4rem 1rem;font-size:0.85rem" onclick="copyPix()">
                     <span class="material-symbols-outlined" style="font-size:1rem">content_copy</span> Copiar chave
                 </button>
             </div>
         </div>
-
-        <!-- Cartão -->
-        <div id="payment-credit" class="payment-detail" style="display:none">
-            <div class="form-group-pay">
-                <label>Número do Cartão</label>
-                <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-                <div class="form-group-pay">
-                    <label>Validade</label>
-                    <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)">
-                </div>
-                <div class="form-group-pay">
-                    <label>CVV</label>
-                    <input type="text" id="card-cvv" placeholder="123" maxlength="3">
-                </div>
-            </div>
-            <div class="form-group-pay">
-                <label>Nome no Cartão</label>
-                <input type="text" id="card-name" placeholder="Como está no cartão">
-            </div>
-        </div>
-
-        <!-- Boleto -->
-        <div id="payment-boleto" class="payment-detail" style="display:none">
-            <div class="pix-box">
-                <span class="material-symbols-outlined" style="font-size:2.5rem;color:var(--primary)">receipt_long</span>
-                <p style="margin:0.5rem 0;font-size:0.9rem;color:#666;">O boleto será gerado após confirmação.<br>Prazo de compensação: até 3 dias úteis.</p>
-            </div>
-        </div>
+        <input type="hidden" name="payment-method" value="pix">
 
         <button class="btn-primary full-width" style="margin-top:1.5rem" onclick="confirmOrder()">Confirmar Pedido</button>
     </div>
