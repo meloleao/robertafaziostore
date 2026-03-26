@@ -134,7 +134,10 @@ async function handleImageUpload(input) {
   const { error } = await _supabase.storage.from('products').upload(fileName, file);
 
   if (error) {
-    status.textContent = 'Erro no upload: ' + error.message;
+    preview.style.display = 'none';
+    placeholder.style.display = 'flex';
+    status.style.display = 'none';
+    alert('Erro no upload da imagem: ' + error.message + '\n\nVerifique se o bucket "products" tem uma policy de INSERT para anon no Supabase Storage.');
     return;
   }
 
