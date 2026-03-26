@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#b9ead5",
+            "surface-bright": "#fff9eb",
+            "outline-variant": "#dcc0ba",
+            "error": "#ba1a1a",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#4a7d7f",
+            "surface-container-highest": "#e8e2d4",
+            "on-secondary-container": "#3e6b5b",
+            "on-secondary-fixed-variant": "#214f3f",
+            "inverse-on-surface": "#f6f0e2",
+            "on-primary": "#ffffff",
+            "on-background": "#1d1c13",
+            "on-primary-fixed-variant": "#7e2b18",
+            "primary-fixed-dim": "#ffb4a3",
+            "surface-variant": "#e8e2d4",
+            "background": "#fff9eb",
+            "inverse-surface": "#333027",
+            "primary-container": "#b95740",
+            "on-primary-container": "#fffbff",
+            "on-primary-fixed": "#3d0600",
+            "on-error": "#ffffff",
+            "tertiary-fixed-dim": "#9cd0d2",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary": "#3a6756",
+            "tertiary": "#306466",
+            "outline": "#89726d",
+            "inverse-primary": "#ffb4a3",
+            "on-tertiary-fixed": "#002021",
+            "on-secondary-fixed": "#002117",
+            "secondary-fixed": "#bcedd8",
+            "surface-container": "#f3eddf",
+            "on-error-container": "#93000a",
+            "on-surface": "#1d1c13",
+            "primary-fixed": "#ffdad2",
+            "surface": "#fff9eb",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#b7ecee",
+            "on-tertiary-container": "#f2ffff",
+            "surface-dim": "#dfdacc",
+            "secondary-fixed-dim": "#a1d1bc",
+            "surface-container-low": "#f9f3e5",
+            "on-tertiary-fixed-variant": "#174e50",
+            "surface-container-high": "#eee8da",
+            "primary": "#9a402b",
+            "surface-tint": "#9d422d",
+            "on-surface-variant": "#56423e"
+          },
+          fontFamily: {
+            "headline": ["Be Vietnam Pro"],
+            "body": ["Newsreader"],
+            "label": ["Be Vietnam Pro"]
+          },
+          borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .bg-hand-drawn-underline {
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='10' viewBox='0 0 100 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 8C20 4 80 4 98 8' stroke='%239a402b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: 100% 8px;
+    }
+
+    .organic-blob-1 {
+      clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 20%);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+  </style>
+</head>
+
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+  <!-- TopNavBar -->
+  <nav
+    class="bg-[#fff9eb] dark:bg-stone-900/90 backdrop-blur-md docked full-width top-0 z-50 shadow-[0_20px_40px_rgba(86,66,62,0.06)] dark:shadow-none">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+      <div class="text-2xl font-bold text-[#9a402b] dark:text-[#b95740] tracking-tight font-headline">
+        Roberta Fazio
+      </div>
+      <div class="hidden md:flex items-center space-x-8">
+        <a class="text-stone-600 dark:text-stone-400 font-medium hover:text-[#9a402b] transition-opacity duration-300"
+          href="#">Home</a>
+        <a class="text-stone-600 dark:text-stone-400 font-medium hover:text-[#9a402b] transition-opacity duration-300"
+          href="#">Store</a>
+        <a class="text-[#9a402b] dark:text-[#b95740] font-bold border-b-2 border-[#9a402b] pb-1 transition-opacity duration-300"
+          href="#">About</a>
+        <a class="text-stone-600 dark:text-stone-400 font-medium hover:text-[#9a402b] transition-opacity duration-300"
+          href="#">Book</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full text-sm font-label">
+          <button class="bg-hand-drawn-underline text-primary font-bold px-1">PT-BR</button>
+          <span class="text-outline-variant">|</span>
+          <button class="text-on-surface-variant hover:text-primary transition-colors px-1">EN-US</button>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[#9a402b] cursor-pointer hover:opacity-80">language</span>
+          <span class="material-symbols-outlined text-[#9a402b] cursor-pointer hover:opacity-80">shopping_cart</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main class="relative overflow-hidden">
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-24 md:pt-20 md:pb-32 px-6">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="order-2 md:order-1 relative">
+          <div class="absolute -top-10 -left-10 w-32 h-32 bg-secondary-container opacity-20 rounded-full blur-3xl">
+          </div>
+          <h1 class="font-headline text-5xl md:text-7xl font-extrabold text-primary leading-tight mb-6 tracking-tight">
+            A arte de <br /><span class="italic font-body font-normal text-on-surface">compreender</span> a alma.
+          </h1>
+          <p class="text-xl md:text-2xl text-on-surface-variant leading-relaxed max-w-md">
+            Unindo a tradição dos quatro temperamentos à profundidade da psicanálise e à luz da fé cristã.
+          </p>
+          <!-- Temperament Accent -->
+          <div class="mt-12 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center animate-pulse">
+              <span class="material-symbols-outlined text-primary">auto_awesome</span>
+            </div>
+            <span class="text-sm font-label uppercase tracking-widest text-primary/60 font-bold">Jornada de
+              Autoconhecimento</span>
+          </div>
+        </div>
+        <div class="order-1 md:order-2 relative group">
+          <div
+            class="absolute inset-0 bg-primary/5 rounded-xl -rotate-3 scale-105 group-hover:rotate-0 transition-transform duration-500">
+          </div>
+          <img
+            class="relative w-full aspect-[4/5] object-cover rounded-xl shadow-xl grayscale-[20%] hover:grayscale-0 transition-all duration-700"
+            data-alt="Close-up portrait of Roberta Fazio with a warm, gentle expression, natural lighting, earthy studio background, soft textures, and artistic focus"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFsri0ZOpKGI2w4_lzIb2GMt4ZnwYvrinOG3Q8aRGO_JZDHqLKWYlhKHosjYAR3ri32kOk870Yx68GdOGI0WIh1RNStkuBr9wlPk_hSb-KwNYM7dmDvrlGw2kg-SmtFZy9CXLUUQEIATZG4kc0mAxzFWFf3Luv_tmZ9TClc4rFq7BtouPwWufI-xa8U9dEqNqNSUNJd-I2819PVpQ69WbJvZZmRPq8YMVFC9D6UlwqZCuCuaj0dJ7rigOAxw_wqXKwR6t8rZbDOaA" />
+          <!-- Floating Annotation -->
+          <div
+            class="absolute -bottom-6 -right-6 bg-white p-6 rounded-lg shadow-lg max-w-[200px] border border-surface-container-high hidden md:block">
+            <p class="font-body italic text-secondary text-sm">"O temperamento não é um destino, é o ponto de partida
+              para a virtude."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Bio Section -->
+    <section class="bg-surface-container py-24 md:py-32 rounded-t-[3rem] md:rounded-t-[5rem]">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <span class="font-label text-primary font-bold tracking-widest uppercase text-sm">Sobre Roberta</span>
+          <h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface mt-4">Conheça a 'Menina dos
+            Temperamentos'</h2>
+        </div>
+        <div class="space-y-8 text-lg md:text-xl leading-relaxed text-on-surface-variant">
+          <p
+            class="first-letter:text-6xl first-letter:font-headline first-letter:font-bold first-letter:text-primary first-letter:mr-3 first-letter:float-left">
+            Roberta Fazio é uma pesquisadora dedicada à alma humana e suas nuances. Através de anos de estudo e
+            observação clínica, ela desenvolveu um método que resgata a milenar teoria dos quatro temperamentos,
+            traduzindo-a para a linguagem contemporânea sem perder sua essência espiritual.
+          </p>
+          <p>
+            Sua trajetória é marcada por um profundo desejo de ajudar pessoas a se reconciliarem com suas naturezas
+            originais. Roberta acredita que o autoconhecimento só é pleno quando iluminado pela busca da verdade e pelo
+            aprimoramento do caráter.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
+            <div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 shadow-sm">
+              <h3 class="font-headline text-xl font-bold text-secondary mb-3">Psicanálise</h3>
+              <p class="text-base">A escuta profunda e o entendimento das dinâmicas do inconsciente que moldam nossas
+                reações e desejos mais íntimos.</p>
+            </div>
+            <div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 shadow-sm">
+              <h3 class="font-headline text-xl font-bold text-tertiary mb-3">Fé Cristã</h3>
+              <p class="text-base">A bússola moral e o fundamento antropológico que dá sentido ao sofrimento e à busca
+                pela santidade no cotidiano.</p>
+            </div>
+          </div>
+          <p>
+            Como autora e educadora, ela tem guiado milhares de alunos através de cursos e mentorias, provando que é
+            possível ser profissional mantendo uma essência profundamente pessoal e artística. Seu trabalho é um convite
+            a olhar para dentro com coragem e para fora com caridade.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- Philosophy Section -->
+    <section class="py-24 px-6 overflow-hidden">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+          <div class="w-full md:w-1/2 relative">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-4">
+                <div class="bg-primary-container h-48 rounded-lg flex items-end p-4">
+                  <span class="text-on-primary-container font-headline font-bold text-4xl opacity-20">01</span>
+                </div>
+                <div class="bg-secondary h-64 rounded-lg flex items-end p-4">
+                  <span class="text-on-secondary font-headline font-bold text-4xl opacity-20">02</span>
+                </div>
+              </div>
+              <div class="space-y-4 pt-8">
+                <div class="bg-tertiary h-64 rounded-lg flex items-end p-4">
+                  <span class="text-on-tertiary font-headline font-bold text-4xl opacity-20">03</span>
+                </div>
+                <div class="bg-surface-container-high h-48 rounded-lg flex items-end p-4">
+                  <span class="text-primary font-headline font-bold text-4xl opacity-20">04</span>
+                </div>
+              </div>
+            </div>
+            <!-- Decorative SVG Blob -->
+            <div
+              class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-surface-container opacity-40 rounded-full blur-3xl">
+            </div>
+          </div>
+          <div class="w-full md:w-1/2">
+            <h2 class="font-headline text-4xl font-bold text-on-surface mb-8">Nossa Filosofia de Trabalho</h2>
+            <ul class="space-y-10">
+              <li class="flex gap-6">
+                <span class="material-symbols-outlined text-primary text-3xl">church</span>
+                <div>
+                  <h4 class="font-headline text-xl font-bold text-on-surface mb-2">Visão Cristã</h4>
+                  <p class="text-on-surface-variant">Entendemos o homem como uma unidade de corpo e alma, criado à
+                    imagem de Deus e chamado à perfeição através da vida interior.</p>
+                </div>
+              </li>
+              <li class="flex gap-6">
+                <span class="material-symbols-outlined text-secondary text-3xl">psychology</span>
+                <div>
+                  <h4 class="font-headline text-xl font-bold text-on-surface mb-2">Fundamento Científico</h4>
+                  <p class="text-on-surface-variant">Aplicamos os conceitos da psicanálise clássica para desvendar os
+                    mecanismos de defesa e os padrões de comportamento.</p>
+                </div>
+              </li>
+              <li class="flex gap-6">
+                <span class="material-symbols-outlined text-tertiary text-3xl">brush</span>
+                <div>
+                  <h4 class="font-headline text-xl font-bold text-on-surface mb-2">Abordagem Artística</h4>
+                  <p class="text-on-surface-variant">Acreditamos que a beleza é uma via de acesso ao transcendente. Cada
+                    aula e produto é pensado como uma peça de arte.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Newsletter Section -->
+    <section class="max-w-7xl mx-auto px-6 mb-24">
+      <div
+        class="bg-primary p-12 md:p-20 rounded-[3rem] relative overflow-hidden flex flex-col items-center text-center">
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+          <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"></path>
+              </pattern>
+            </defs>
+            <rect fill="url(#grid)" height="100%" width="100%"></rect>
+          </svg>
+        </div>
+        <h2 class="font-headline text-3xl md:text-5xl font-bold text-on-primary mb-6 relative z-10">Acompanhe minha
+          jornada</h2>
+        <p class="text-on-primary-container text-lg md:text-xl max-w-2xl mb-10 relative z-10 font-body">
+          Inscreva-se para receber reflexões exclusivas sobre os temperamentos, avisos de novos cursos e conteúdos sobre
+          vida interior.
+        </p>
+        <form class="flex flex-col md:flex-row gap-4 w-full max-w-lg relative z-10">
+          <input
+            class="flex-grow bg-white/10 border border-white/20 rounded-full px-6 py-4 text-white placeholder:text-white/60 focus:ring-2 focus:ring-white/40 focus:border-transparent outline-none font-body text-lg"
+            placeholder="Seu melhor e-mail" type="email" />
+          <button
+            class="bg-on-primary-container text-primary-container font-headline font-bold px-10 py-4 rounded-full hover:bg-white transition-colors duration-300 shadow-lg active:scale-95">
+            Inscrever
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer
+    class="bg-[#f3eddf] dark:bg-stone-900 text-[#3a6756] dark:text-[#4a8a73] font-newsreader text-base leading-relaxed full-width rounded-t-[3rem] mt-20 tonal-shift via surface-container">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 py-16 max-w-7xl mx-auto">
+      <div class="space-y-6">
+        <div class="text-xl font-bold text-[#9a402b]">Roberta Fazio</div>
+        <p class="text-stone-500">Transformando o conhecimento milenar em ferramentas práticas para o seu crescimento
+          pessoal e espiritual.</p>
+        <div class="flex gap-4">
+          <span
+            class="material-symbols-outlined cursor-pointer hover:translate-x-1 transition-transform duration-200">share</span>
+          <span
+            class="material-symbols-outlined cursor-pointer hover:translate-x-1 transition-transform duration-200">mail</span>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-headline font-bold text-[#9a402b] mb-6">Explore</h4>
+        <ul class="space-y-3">
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Cursos</a></li>
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Livros</a></li>
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Mentoria</a></li>
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-headline font-bold text-[#9a402b] mb-6">Links Úteis</h4>
+        <ul class="space-y-3">
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Terms</a></li>
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Privacy</a></li>
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Shipping</a></li>
+          <li><a
+              class="text-stone-500 hover:text-[#3a6756] hover:translate-x-1 transition-transform duration-200 inline-block"
+              href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="space-y-6">
+        <h4 class="font-headline font-bold text-[#9a402b] mb-6">News</h4>
+        <p class="text-sm text-stone-500">Fique por dentro das novidades da Menina dos Temperamentos.</p>
+        <div class="relative">
+          <input class="w-full bg-white/50 border-none rounded-full px-4 py-2 focus:ring-2 ring-[#3a6756]/20"
+            placeholder="Email" type="text" />
+        </div>
+        <div class="pt-4 text-xs text-stone-400">
+          © 2026 Roberta Fazio. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
