@@ -32,13 +32,23 @@ async function checkUser() {
 
 document.getElementById('login-form').onsubmit = async (e) => {
   e.preventDefault();
+  const btn = e.target.querySelector('button');
+  const originalText = btn.textContent;
+  btn.textContent = 'Processando...';
+  btn.disabled = true;
+
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-pass').value;
 
+  console.log('Tentando login para:', email);
   const { error } = await _supabase.auth.signInWithPassword({ email, password });
+  
   if (error) {
     alert('Erro ao entrar: ' + error.message);
+    btn.textContent = originalText;
+    btn.disabled = false;
   } else {
+    console.log('Login bem-sucedido!');
     checkUser();
   }
 };
@@ -51,16 +61,27 @@ async function logout() {
 // ─── PRODUCTS CRUD ──────────────────────────────────────────────────────────
 
 async function loadProducts() {
+  productTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;">Carregando produtos...</td></tr>';
+  
+  console.log('Buscando produtos do Supabase...');
   const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+  
   if (error) {
     console.error('Erro ao buscar produtos:', error);
+    productTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;">Erro ao carregar dados.</td></tr>';
     return;
   }
-  products = data;
+  
+  console.log('Produtos recebidos:', data?.length || 0);
+  products = data || [];
   renderProducts();
 }
 
 function renderProducts() {
+  if (products.length === 0) {
+    productTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:3rem;color:#666;">Nenhum produto cadastrado ainda.<br><br><button class="btn-primary" onclick="openProductModal()">Cadastrar Primeiro Produto</button></td></tr>';
+    return;
+  }
   productTbody.innerHTML = products.map(p => `
     <tr>
       <td><img src="${p.img}" alt="${p.name}" class="product-thumb" onerror="this.src='./Imagens/placeholder.jpg'"></td>

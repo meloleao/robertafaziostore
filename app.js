@@ -8,14 +8,15 @@ const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 let products = []; // Agora carregados do banco
 
 async function loadProducts() {
+  console.log('App: Buscando produtos...');
   const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
   if (error) {
-    console.error('Erro ao carregar produtos:', error);
+    console.error('App: Erro ao carregar produtos:', error);
     return;
   }
-  products = data;
-  if (currentPage === 'store') renderStore(document.getElementById('page-store'));
-  if (currentPage === 'home') renderHome(document.getElementById('page-home'));
+  console.log('App: Produtos carregados:', data?.length || 0);
+  products = data || [];
+  renderPage(currentPage); // Re-renderiza a página atual com os dados novos
 }
 
 
