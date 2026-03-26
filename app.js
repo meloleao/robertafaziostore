@@ -550,10 +550,11 @@ function renderFooter() {
           </ul>
         </div>
       </div>
-      <div class="footer-bottom">© 2024 Roberta Fazio. Todos os direitos reservados.</div>
+      <div class="footer-bottom">© 2026 Roberta Fazio. Todos os direitos reservados.</div>
     </footer>
   `;
 }
+
 
 // ─── MISC ─────────────────────────────────────────────────────────────────────
 
