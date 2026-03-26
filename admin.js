@@ -17,16 +17,28 @@ const productForm = document.getElementById('product-form');
 // ─── AUTH ────────────────────────────────────────────────────────────────────
 
 async function checkUser() {
-  const { data: { user } } = await _supabase.auth.getUser();
-  if (user) {
-    currentUser = user;
-    loginSection.classList.add('hidden');
-    adminContent.classList.remove('hidden');
-    document.getElementById('user-info').textContent = user.email;
-    loadProducts();
-  } else {
-    loginSection.classList.remove('hidden');
-    adminContent.classList.add('hidden');
+  console.log('[Admin] Verificando sessão do usuário...');
+  try {
+    const { data: { user }, error } = await _supabase.auth.getUser();
+    if (error) {
+      console.error('[Admin] Erro ao obter usuário:', error.message);
+      return;
+    }
+    
+    if (user) {
+      console.log('[Admin] Usuário autenticado:', user.email);
+      currentUser = user;
+      loginSection.classList.add('hidden');
+      adminContent.classList.remove('hidden');
+      document.getElementById('user-info').textContent = user.email;
+      loadProducts();
+    } else {
+      console.log('[Admin] Nenhum usuário logado.');
+      loginSection.classList.remove('hidden');
+      adminContent.classList.add('hidden');
+    }
+  } catch (e) {
+    console.error('[Admin] Falha crítica no checkUser:', e);
   }
 }
 
@@ -165,4 +177,5 @@ window.openProductModal = openProductModal;
 productForm.onsubmit = handleProductSubmit;
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
+console.log('[Admin] Arquivo v4 carregado (com logs)!');
 checkUser();
