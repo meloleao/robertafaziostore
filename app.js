@@ -46,9 +46,9 @@ function saveCart() { localStorage.setItem('rf-cart', JSON.stringify(cart)); }
 
 function addToCart(id) {
   const product = [...products, { ...book, id: 99, name: book.title, category: 'livro', badge: 'best' }]
-    .find(p => p.id === id);
+    .find(p => String(p.id) === String(id));
   if (!product) return;
-  const existing = cart.find(i => i.id === id);
+  const existing = cart.find(i => String(i.id) === String(id));
   if (existing) { existing.qty++; }
   else { cart.push({ id: product.id, name: product.name, price: product.price, img: product.img, qty: 1 }); }
   saveCart();
@@ -57,12 +57,12 @@ function addToCart(id) {
 }
 
 function removeFromCart(id) {
-  cart = cart.filter(i => i.id !== id);
+  cart = cart.filter(i => String(i.id) !== String(id));
   saveCart(); renderCart();
 }
 
 function changeQty(id, delta) {
-  const item = cart.find(i => i.id === id);
+  const item = cart.find(i => String(i.id) === String(id));
   if (!item) return;
   item.qty += delta;
   if (item.qty <= 0) removeFromCart(id);
@@ -101,12 +101,12 @@ function renderCart() {
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-price">R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
         <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+          <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
           <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+          <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
         </div>
       </div>
-      <button class="cart-remove" onclick="removeFromCart(${item.id})">
+      <button class="cart-remove" onclick="removeFromCart('${item.id}')">
         <span class="material-symbols-outlined" style="font-size:1.1rem">delete</span>
       </button>
     </div>
@@ -464,7 +464,7 @@ function productCard(p) {
             ${p.oldPrice ? `<div class="product-price-old">R$ ${p.oldPrice.toFixed(2).replace('.', ',')}</div>` : ''}
             <div class="product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
           </div>
-          <button class="add-btn" onclick="addToCart(${p.id})">
+          <button class="add-btn" onclick="addToCart('${p.id}')">
             <span class="material-symbols-outlined">add_shopping_cart</span>
             Comprar
           </button>
