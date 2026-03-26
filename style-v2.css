@@ -306,6 +306,26 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .modal p { color: var(--on-surface-variant); margin-bottom: 0.5rem; }
 .modal-sub { font-size: 0.9rem; margin-bottom: 2rem !important; }
 
+/* PAYMENT */
+.payment-options { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+.payment-option {
+  display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem;
+  border: 2px solid #eee; border-radius: 0.75rem; cursor: pointer; transition: 0.2s;
+}
+.payment-option:hover { border-color: var(--primary); }
+.payment-option.selected { border-color: var(--primary); background: #fff5f3; }
+.payment-option input[type="radio"] { accent-color: var(--primary); width: 18px; height: 18px; flex-shrink: 0; }
+.payment-option .material-symbols-outlined { color: var(--primary); font-size: 1.6rem; }
+.payment-option div { display: flex; flex-direction: column; gap: 0.1rem; }
+.payment-option strong { font-size: 0.95rem; }
+.payment-option small { font-size: 0.78rem; color: #888; }
+.payment-detail { background: var(--surface); border-radius: 0.75rem; padding: 1rem; margin-bottom: 0.5rem; }
+.pix-box { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0.5rem; }
+.pix-key { font-family: monospace; background: #eee; padding: 0.4rem 0.75rem; border-radius: 0.4rem; font-size: 0.9rem; }
+.form-group-pay { margin-bottom: 0.9rem; }
+.form-group-pay label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.3rem; }
+.form-group-pay input { width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 0.5rem; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; }
+
 /* NEWSLETTER */
 .newsletter { background: var(--primary); padding: 5rem 1.5rem; text-align: center; position: relative; overflow: hidden; }
 .newsletter::before {

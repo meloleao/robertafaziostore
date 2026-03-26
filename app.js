@@ -121,16 +121,52 @@ function toggleCart() {
 
 function checkout() {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-
-  // Salvar no Supabase
-  _supabase.from('orders').insert([{
-    items: cart,
-    total: total
-  }]).then(({ error }) => {
-    if (error) console.error('Erro ao salvar pedido:', error);
-  });
-
+  document.getElementById('payment-total-display').textContent =
+    `R$ ${total.toFixed(2).replace('.', ',')}`;
+  // Reset seleção
+  document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('input[name="payment-method"]').forEach(r => r.checked = false);
+  document.querySelectorAll('.payment-detail').forEach(el => el.style.display = 'none');
   toggleCart();
+  document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function closePaymentModal() {
+  document.getElementById('payment-modal').style.display = 'none';
+}
+
+function selectPayment(method, el) {
+  document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.payment-detail').forEach(d => d.style.display = 'none');
+  el.classList.add('selected');
+  document.getElementById(`payment-${method}`).style.display = 'block';
+}
+
+function copyPix() {
+  navigator.clipboard.writeText('contato@robertafazio.com.br')
+    .then(() => showToast('Chave PIX copiada! ✓'));
+}
+
+function formatCard(input) {
+  let v = input.value.replace(/\D/g, '').slice(0, 16);
+  input.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g, '').slice(0, 4);
+  if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+  input.value = v;
+}
+
+async function confirmOrder() {
+  const method = document.querySelector('input[name="payment-method"]:checked')?.value;
+  if (!method) { showToast('Escolha uma forma de pagamento.'); return; }
+
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const { error } = await _supabase.from('orders').insert([{ items: cart, total, payment_method: method }]);
+  if (error) console.error('Erro ao salvar pedido:', error);
+
+  closePaymentModal();
   document.getElementById('checkout-modal').style.display = 'flex';
 }
 
