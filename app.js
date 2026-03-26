@@ -86,7 +86,6 @@ function renderCart() {
     emptyEl.style.display = 'flex';
     footer.style.display = 'none';
     container.innerHTML = '';
-    container.appendChild(emptyEl);
     return;
   }
 
