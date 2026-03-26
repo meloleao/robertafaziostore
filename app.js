@@ -1,72 +1,22 @@
+// ─── SUPABASE CONFIG ────────────────────────────────────────────────────────
+const supabaseUrl = 'https://xfopqonqufafjfphrrli.supabase.co';
+const supabaseKey = 'SUA_CHAVE_ANON_DO_SUPABASE'; // Pegue em Settings > API
+const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
 // ─── DATA ───────────────────────────────────────────────────────────────────
 
-const products = [
-  {
-    id: 1, name: 'Caneca Sanguínea', category: 'canecas',
-    price: 59.90, badge: 'best',
-    img: './Imagens/sanguinia.jpg',
-    desc: 'Caneca artística ilustrada com as características da Sanguínea.',
-    tag: 'Mais Vendido'
-  },
-  {
-    id: 2, name: 'Caneca Colérica', category: 'canecas',
-    price: 59.90, badge: 'new',
-    img: './Imagens/colerica.jpg',
-    desc: 'Caneca artística ilustrada com as características da Colérica.',
-    tag: 'Novo'
-  },
-  {
-    id: 9, name: 'Caneca Fleumática', category: 'canecas',
-    price: 59.90,
-    img: './Imagens/fleumatica.jpg',
-    desc: 'Caneca artística ilustrada com as características da Fleumática.'
-  },
-  {
-    id: 10, name: 'Caneca Melancólica', category: 'canecas',
-    price: 59.90,
-    img: './Imagens/melancolica.jpg',
-    desc: 'Caneca artística ilustrada com as características da Melancólica.'
-  },
-  {
-    id: 3, name: 'Print A Sanguínea', category: 'prints',
-    price: 49.90, oldPrice: 69.90, badge: 'best',
-    img: './Imagens/sanguinia.jpg',
-    desc: 'Pôster A3 premium da ilustração original A Sanguínea.',
-    tag: 'Mais Vendido'
-  },
-  {
-    id: 4, name: 'Print A Colérica', category: 'prints',
-    price: 49.90,
-    img: './Imagens/colerica.jpg',
-    desc: 'Pôster A3 premium da ilustração original A Colérica.'
-  },
-  {
-    id: 5, name: 'Print A Fleumática', category: 'prints',
-    price: 49.90,
-    img: './Imagens/fleumatica.jpg',
-    desc: 'Pôster A3 premium da ilustração original A Fleumática.'
-  },
-  {
-    id: 6, name: 'Print A Melancólica', category: 'prints',
-    price: 49.90,
-    img: './Imagens/melancolica.jpg',
-    desc: 'Pôster A3 premium da illustration original A Melancólica.'
-  },
-  {
-    id: 7, name: 'Curso Online: Os 4 Temperamentos', category: 'cursos',
-    price: 297, oldPrice: 497, badge: 'digital',
-    img: './Imagens/Livro.jpg',
-    desc: 'Curso completo com 8 módulos em vídeo. Acesso vitalício.',
-    tag: 'Digital'
-  },
-  {
-    id: 8, name: 'Mentoria Individual', category: 'cursos',
-    price: 450, badge: 'digital',
-    img: './Imagens/Livro.jpg',
-    desc: '1 hora de mentoria individual com Roberta Fazio via videoconferência.',
-    tag: 'Digital'
+let products = []; // Agora carregados do banco
+
+async function loadProducts() {
+  const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+  if (error) {
+    console.error('Erro ao carregar produtos:', error);
+    return;
   }
-];
+  products = data;
+  if (currentPage === 'store') renderStore(document.getElementById('page-store'));
+  if (currentPage === 'home') renderHome(document.getElementById('page-home'));
+}
 
 
 const book = {
@@ -170,6 +120,16 @@ function toggleCart() {
 }
 
 function checkout() {
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  
+  // Salvar no Supabase
+  _supabase.from('orders').insert([{
+    items: cart,
+    total: total
+  }]).then(({ error }) => {
+    if (error) console.error('Erro ao salvar pedido:', error);
+  });
+
   toggleCart();
   document.getElementById('checkout-modal').style.display = 'flex';
 }
@@ -558,9 +518,23 @@ function renderFooter() {
 
 // ─── MISC ─────────────────────────────────────────────────────────────────────
 
-function subscribeNewsletter(e) {
+async function subscribeNewsletter(e) {
   e.preventDefault();
-  showToast('Inscrição realizada com sucesso! 💌');
+  const email = document.getElementById('nl-email').value;
+
+  const { error } = await _supabase.from('subscriptions').insert([{ email }]);
+
+  if (error) {
+    if (error.code === '23505') { // Unique constraint
+      showToast('Este e-mail já está cadastrado! 😊');
+    } else {
+      console.error('Erro na newsletter:', error);
+      showToast('Houve um erro. Tente novamente! 😕');
+    }
+  } else {
+    showToast('Inscrição realizada com sucesso! 💌');
+  }
+  
   e.target.reset();
 }
 
@@ -570,5 +544,6 @@ function startQuiz() {
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 
+loadProducts();
 renderCart();
 showPage('home');

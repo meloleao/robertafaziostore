@@ -288,11 +288,13 @@
           Inscreva-se para receber reflexões exclusivas sobre os temperamentos, avisos de novos cursos e conteúdos sobre
           vida interior.
         </p>
-        <form class="flex flex-col md:flex-row gap-4 w-full max-w-lg relative z-10">
+        <form class="flex flex-col md:flex-row gap-4 w-full max-w-lg relative z-10" onsubmit="subscribeNewsletter(event)">
           <input
+            id="nl-email"
             class="flex-grow bg-white/10 border border-white/20 rounded-full px-6 py-4 text-white placeholder:text-white/60 focus:ring-2 focus:ring-white/40 focus:border-transparent outline-none font-body text-lg"
-            placeholder="Seu melhor e-mail" type="email" />
+            placeholder="Seu melhor e-mail" type="email" required />
           <button
+            type="submit"
             class="bg-on-primary-container text-primary-container font-headline font-bold px-10 py-4 rounded-full hover:bg-white transition-colors duration-300 shadow-lg active:scale-95">
             Inscrever
           </button>
@@ -362,6 +364,26 @@
       </div>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = 'https://xfopqonqufafjfphrrli.supabase.co';
+    const supabaseKey = 'SUA_CHAVE_ANON'; // Insira sua chave anon aqui
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function subscribeNewsletter(e) {
+      e.preventDefault();
+      const email = document.getElementById('nl-email').value;
+      
+      const { error } = await _supabase.from('subscriptions').insert([{ email }]);
+      
+      if (error) {
+        alert(error.code === '23505' ? 'E-mail já cadastrado!' : 'Erro ao cadastrar.');
+      } else {
+        alert('Inscrição realizada com sucesso! 💌');
+        e.target.reset();
+      }
+    }
+  </script>
 </body>
 
 </html>
