@@ -44,7 +44,7 @@
         #login-section { display: flex; min-height: 100vh; align-items: center; justify-content: center; }
         .login-card { background: white; padding: 3rem; border-radius: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; }
         
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .btn-logout { background: none; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer; font-size: 0.8rem; }
         .btn-logout:hover { border-color: var(--admin-primary); color: var(--admin-primary); }
     </style>
@@ -158,6 +158,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="admin.js?v=3"></script>
+    <script src="admin.js?v=4"></script>
 </body>
 </html>
