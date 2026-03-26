@@ -123,10 +123,6 @@ function checkout() {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   document.getElementById('payment-total-display').textContent =
     `R$ ${total.toFixed(2).replace('.', ',')}`;
-  // Reset seleção
-  document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
-  document.querySelectorAll('input[name="payment-method"]').forEach(r => r.checked = false);
-  document.querySelectorAll('.payment-detail').forEach(el => el.style.display = 'none');
   toggleCart();
   document.getElementById('payment-modal').style.display = 'flex';
 }
