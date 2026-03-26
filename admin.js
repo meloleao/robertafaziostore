@@ -1,6 +1,6 @@
 // ─── SUPABASE CONFIG ────────────────────────────────────────────────────────
 const supabaseUrl = 'https://xfopqonqufafjfphrrli.supabase.co';
-const supabaseKey = 'SUA_CHAVE_ANON_DO_SUPABASE'; // Pegue em Settings > API
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhmb3Bxb25xdWZhZmpmcGhycmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1MzM4NDEsImV4cCI6MjA5MDEwOTg0MX0.YcDrniGV80ueR0sxoVOj6e-XM9O_z70JwTTGHItNBDo'; // Pegue em Settings > API
 const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
@@ -84,7 +84,7 @@ function openProductModal(id = null) {
   editingId = id;
   productForm.reset();
   document.getElementById('modal-title').textContent = id ? 'Editar Produto' : 'Novo Produto';
-  
+
   if (id) {
     const p = products.find(item => item.id === id);
     if (p) {
@@ -96,7 +96,7 @@ function openProductModal(id = null) {
       document.getElementById('prod-desc').value = p.description || '';
     }
   }
-  
+
   productModal.style.display = 'flex';
 }
 
