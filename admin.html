@@ -45,6 +45,13 @@
         .login-card { background: white; padding: 3rem; border-radius: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; }
         
         .hidden { display: none !important; }
+        .img-upload-area {
+            border: 2px dashed #ddd; border-radius: 0.5rem; height: 140px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0.4rem; cursor: pointer; transition: border-color 0.2s; overflow: hidden; position: relative;
+        }
+        .img-upload-area:hover { border-color: var(--admin-primary); }
+        #img-upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
         .btn-logout { background: none; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer; font-size: 0.8rem; }
         .btn-logout:hover { border-color: var(--admin-primary); color: var(--admin-primary); }
     </style>
@@ -142,8 +149,17 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>URL da Imagem</label>
-                    <input type="text" id="prod-img" placeholder="./Imagens/nome.jpg">
+                    <label>Imagem do Produto</label>
+                    <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('prod-img-file').click()">
+                        <img id="img-preview" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:0.5rem;">
+                        <div id="img-upload-placeholder">
+                            <span class="material-symbols-outlined" style="font-size:2rem;color:#aaa">cloud_upload</span>
+                            <span style="font-size:0.85rem;color:#999">Clique para fazer upload</span>
+                        </div>
+                        <span id="img-upload-status" style="display:none; font-size:0.8rem; color:#9a402b; padding:0.5rem;">Enviando...</span>
+                    </div>
+                    <input type="file" id="prod-img-file" accept="image/*" style="display:none" onchange="handleImageUpload(this)">
+                    <input type="text" id="prod-img" placeholder="Ou cole a URL da imagem aqui" style="margin-top:0.5rem; font-size:0.85rem;">
                 </div>
                 <div class="form-group">
                     <label>Descrição</label>

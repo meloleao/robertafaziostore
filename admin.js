@@ -113,10 +113,45 @@ function renderProducts() {
   `).join('');
 }
 
+async function handleImageUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const preview = document.getElementById('img-preview');
+  const placeholder = document.getElementById('img-upload-placeholder');
+  const status = document.getElementById('img-upload-status');
+
+  // Mostrar preview local imediatamente
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = 'block';
+  placeholder.style.display = 'none';
+  status.style.display = 'block';
+  status.textContent = 'Enviando...';
+
+  const ext = file.name.split('.').pop();
+  const fileName = `${Date.now()}.${ext}`;
+
+  const { error } = await _supabase.storage.from('products').upload(fileName, file);
+
+  if (error) {
+    status.textContent = 'Erro no upload: ' + error.message;
+    return;
+  }
+
+  const { data: { publicUrl } } = _supabase.storage.from('products').getPublicUrl(fileName);
+  document.getElementById('prod-img').value = publicUrl;
+  status.style.display = 'none';
+}
+
 function openProductModal(id = null) {
   editingId = id;
   productForm.reset();
   document.getElementById('modal-title').textContent = id ? 'Editar Produto' : 'Novo Produto';
+
+  // Resetar área de upload
+  document.getElementById('img-preview').style.display = 'none';
+  document.getElementById('img-upload-placeholder').style.display = 'flex';
+  document.getElementById('img-upload-status').style.display = 'none';
 
   if (id) {
     const p = products.find(item => item.id === id);
@@ -127,6 +162,12 @@ function openProductModal(id = null) {
       document.getElementById('prod-badge').value = p.badge || '';
       document.getElementById('prod-img').value = p.img;
       document.getElementById('prod-desc').value = p.description || '';
+      if (p.img) {
+        const preview = document.getElementById('img-preview');
+        preview.src = p.img;
+        preview.style.display = 'block';
+        document.getElementById('img-upload-placeholder').style.display = 'none';
+      }
     }
   }
 
@@ -173,6 +214,7 @@ window.deleteProduct = deleteProduct;
 window.logout = logout;
 window.closeProductModal = closeProductModal;
 window.openProductModal = openProductModal;
+window.handleImageUpload = handleImageUpload;
 
 productForm.onsubmit = handleProductSubmit;
 
