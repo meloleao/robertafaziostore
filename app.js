@@ -203,6 +203,7 @@ function renderPage(page) {
   else if (page === 'book') renderBook(el);
 }
 
+
 // ─── HOME PAGE ────────────────────────────────────────────────────────────────
 
 function renderHome(el) {
@@ -214,10 +215,10 @@ function renderHome(el) {
         <h1>A arte de<br><em>compreender</em> a alma.</h1>
         <p>Arquiteta e Psicanalista cristã de formação, e mentora de milhares de mulheres, Roberta Fázio ajuda mulheres a descobrirem sua essência sob uma perspectiva cristã.</p>
         <div class="hero-tags">
-          <span class="tag tag-red">Sanguíneo</span>
-          <span class="tag tag-green">Fleumático</span>
-          <span class="tag tag-sand">Melancólico</span>
-          <span class="tag tag-teal">Colérico</span>
+          <span class="tag tag-red">SANGUÍNEA</span>
+          <span class="tag tag-green">FLEUMÁTICA</span>
+          <span class="tag tag-sand">MELANCÓLICA</span>
+          <span class="tag tag-teal">COLÉRICA</span>
         </div>
         <div class="hero-btns">
           <button class="btn-primary" onclick="showPage('store')">
@@ -244,28 +245,28 @@ function renderHome(el) {
       <div class="temper-grid" style="max-width:1200px;margin:0 auto">
         ${[
           { 
-            img:'./Imagens/Livro.jpg', label:'Colérico', element: 'Fogo',
+            img:'./Imagens/colerica.jpg', label:'COLÉRICA', element: 'FOGO',
             desc: 'O perfil da ação e do comando. Decidido, focado em resultados e com alta energia de realização.',
             good: 'Liderança natural, coragem e lealdade.',
             challenge: 'Impaciência, ira e autoritarismo.',
             color:'#9a402b' 
           },
           { 
-            img:'./Imagens/Livro.jpg', label:'Sanguíneo', element: 'Ar',
+            img:'./Imagens/sanguinia.jpg', label:'SANGUÍNEA', element: 'AR',
             desc: 'Perfil da comunicação e movimento. Pessoas vibrantes, que iluminam o ambiente e se adaptam fácil.',
             good: 'Alegria, facilidade em fazer amigos e entusiasmo.',
             challenge: 'Falta de constância e superficialidade.',
             color:'#3a6756' 
           },
           { 
-            img:'./Imagens/Livro.jpg', label:'Fleumático', element: 'Água',
+            img:'./Imagens/fleumatica.jpg', label:'FLEUMÁTICA', element: 'ÁGIA',
             desc: 'Perfil da paz e constância. Diplomático, calmo e dificilmente perde o controle emocional.',
             good: 'Confiabilidade, bom senso e mediação de conflitos.',
             challenge: 'Lentidão, passividade e dificuldade em se posicionar.',
             color:'#306466' 
           },
           { 
-            img:'./Imagens/Livro.jpg', label:'Melancólico', element: 'Terra',
+            img:'./Imagens/melancolica.jpg', label:'MELANCÓLICA', element: 'TERRA',
             desc: 'Perfil da profundidade e ordem. Detalhista, sensível e busca perfeição em tudo o que faz.',
             good: 'Lealdade extrema, senso estético e análise profunda.',
             challenge: 'Pessimismo, rancor e paralisia pelo perfeccionismo.',
@@ -313,10 +314,10 @@ function renderHome(el) {
         <h2 class="section-title">Qual das quatro você é?</h2>
         <p>Faça o quiz gratuito e descubra seu temperamento dominante. Em menos de 3 minutos você terá uma visão profunda de si mesma.</p>
         <div class="quiz-temperaments">
-          <span class="quiz-temp-chip" style="background:#ffdad2;color:#9a402b">🔴 Sanguínea</span>
-          <span class="quiz-temp-chip" style="background:#b9ead5;color:#3a6756">🟢 Fleumática</span>
-          <span class="quiz-temp-chip" style="background:#b7ecee;color:#306466">🔵 Colérica</span>
-          <span class="quiz-temp-chip" style="background:#f3eddf;color:#7e2b18">🟡 Melancólica</span>
+          <span class="quiz-temp-chip" style="background:#ffdad2;color:#9a402b">🔴 SANGUÍNEA</span>
+          <span class="quiz-temp-chip" style="background:#b9ead5;color:#3a6756">🟢 FLEUMÁTICA</span>
+          <span class="quiz-temp-chip" style="background:#b7ecee;color:#306466">🔵 COLÉRICA</span>
+          <span class="quiz-temp-chip" style="background:#f3eddf;color:#7e2b18">🟡 MELANCÓLICA</span>
         </div>
         <button class="btn-primary" onclick="startQuiz()">
           <span class="material-symbols-outlined" style="font-size:1rem">psychology</span>
@@ -341,6 +342,7 @@ function renderHome(el) {
     ${renderFooter()}
   `;
 }
+
 
 // ─── STORE PAGE ───────────────────────────────────────────────────────────────
 
