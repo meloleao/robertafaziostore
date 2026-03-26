@@ -121,7 +121,7 @@ function toggleCart() {
 
 function checkout() {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  
+
   // Salvar no Supabase
   _supabase.from('orders').insert([{
     items: cart,
@@ -217,35 +217,35 @@ function renderHome(el) {
       </div>
       <div class="temper-grid" style="max-width:1200px;margin:0 auto">
         ${[
-          { 
-            img:'./Imagens/colerica.jpg', label:'COLÉRICA', element: 'FOGO',
-            desc: 'O perfil da ação e do comando. Decidido, focado em resultados e com alta energia de realização.',
-            good: 'Liderança natural, coragem e lealdade.',
-            challenge: 'Impaciência, ira e autoritarismo.',
-            color:'#9a402b' 
-          },
-          { 
-            img:'./Imagens/sanguinia.jpg', label:'SANGUÍNEA', element: 'AR',
-            desc: 'Perfil da comunicação e movimento. Pessoas vibrantes, que iluminam o ambiente e se adaptam fácil.',
-            good: 'Alegria, facilidade em fazer amigos e entusiasmo.',
-            challenge: 'Falta de constância e superficialidade.',
-            color:'#3a6756' 
-          },
-          { 
-            img:'./Imagens/fleumatica.jpg', label:'FLEUMÁTICA', element: 'ÁGIA',
-            desc: 'Perfil da paz e constância. Diplomático, calmo e dificilmente perde o controle emocional.',
-            good: 'Confiabilidade, bom senso e mediação de conflitos.',
-            challenge: 'Lentidão, passividade e dificuldade em se posicionar.',
-            color:'#306466' 
-          },
-          { 
-            img:'./Imagens/melancolica.jpg', label:'MELANCÓLICA', element: 'TERRA',
-            desc: 'Perfil da profundidade e ordem. Detalhista, sensível e busca perfeição em tudo o que faz.',
-            good: 'Lealdade extrema, senso estético e análise profunda.',
-            challenge: 'Pessimismo, rancor e paralisia pelo perfeccionismo.',
-            color:'#7e2b18' 
-          }
-        ].map(t => `
+      {
+        img: './Imagens/colerica.jpg', label: 'COLÉRICA', element: 'FOGO',
+        desc: 'O perfil da ação e do comando. Decidido, focado em resultados e com alta energia de realização.',
+        good: 'Liderança natural, coragem e lealdade.',
+        challenge: 'Impaciência, ira e autoritarismo.',
+        color: '#9a402b'
+      },
+      {
+        img: './Imagens/sanguinia.jpg', label: 'SANGUÍNEA', element: 'AR',
+        desc: 'Perfil da comunicação e movimento. Pessoas vibrantes, que iluminam o ambiente e se adaptam fácil.',
+        good: 'Alegria, facilidade em fazer amigos e entusiasmo.',
+        challenge: 'Falta de constância e superficialidade.',
+        color: '#3a6756'
+      },
+      {
+        img: './Imagens/fleumatica.jpg', label: 'FLEUMÁTICA', element: 'ÁGIA',
+        desc: 'Perfil da paz e constância. Diplomático, calmo e dificilmente perde o controle emocional.',
+        good: 'Confiabilidade, bom senso e mediação de conflitos.',
+        challenge: 'Lentidão, passividade e dificuldade em se posicionar.',
+        color: '#306466'
+      },
+      {
+        img: './Imagens/melancolica.jpg', label: 'MELANCÓLICA', element: 'TERRA',
+        desc: 'Perfil da profundidade e ordem. Detalhista, sensível e busca perfeição em tudo o que faz.',
+        good: 'Lealdade extrema, senso estético e análise profunda.',
+        challenge: 'Pessimismo, rancor e paralisia pelo perfeccionismo.',
+        color: '#7e2b18'
+      }
+    ].map(t => `
           <div class="temper-card">
             <div class="temper-card-img">
               <img src="${t.img}" alt="${t.label}">
@@ -272,7 +272,7 @@ function renderHome(el) {
           <p class="section-subtitle">Ilustrações exclusivas com muito amor e cuidado artístico.</p>
         </div>
         <div class="products-grid">
-          ${products.filter(p => p.badge === 'best' || p.badge === 'new').slice(0,4).map(productCard).join('')}
+          ${products.filter(p => p.badge === 'best' || p.badge === 'new').slice(0, 4).map(productCard).join('')}
         </div>
         <div style="text-align:center;margin-top:2.5rem">
           <button class="btn-secondary" onclick="showPage('store')">Ver Todos os Produtos</button>
@@ -326,9 +326,9 @@ function renderStore(el) {
       <h1>Nossa Loja</h1>
       <p>Produtos artísticos criados com amor para sua jornada de autoconhecimento.</p>
       <div class="store-filters">
-        ${['todos','prints','canecas','cursos'].map(f => `
+        ${['todos', 'prints', 'canecas', 'cursos'].map(f => `
           <button class="filter-btn ${activeFilter === f ? 'active' : ''}" onclick="setFilter('${f}')">
-            ${ {todos:'Todos', prints:'Pôsteres', canecas:'Canecas', cursos:'Cursos & Mentoria'}[f] }
+            ${{ todos: 'Todos', prints: 'Pôsteres', canecas: 'Canecas', cursos: 'Cursos & Mentoria' }[f]}
           </button>
         `).join('')}
       </div>
@@ -455,7 +455,7 @@ function productCard(p) {
         ${p.badge ? `<span class="product-badge ${badgeMap[p.badge]}">${badgeLabel[p.badge]}</span>` : ''}
       </div>
       <div class="product-info">
-        <div class="product-cat">${{prints:'Pôster', canecas:'Caneca', cursos:'Curso', livro:'Livro'}[p.category] || p.category}</div>
+        <div class="product-cat">${{ prints: 'Pôster', canecas: 'Caneca', cursos: 'Curso', livro: 'Livro' }[p.category] || p.category}</div>
         <div class="product-name">${p.name}</div>
         <div class="product-desc">${p.desc || ''}</div>
         <div class="product-footer">
@@ -534,7 +534,7 @@ async function subscribeNewsletter(e) {
   } else {
     showToast('Inscrição realizada com sucesso! 💌');
   }
-  
+
   e.target.reset();
 }
 
