@@ -291,12 +291,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* MODAL */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-  z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1rem;
+  z-index: 300; display: flex; align-items: flex-start; justify-content: center; padding: 1.5rem 1rem; overflow-y: auto;
 }
 .modal {
   background: var(--bg); border-radius: var(--radius-lg);
-  padding: 3rem 2.5rem; max-width: 440px; width: 100%;
+  padding: 2.5rem 2rem; max-width: 440px; width: 100%;
   text-align: center; position: relative; box-shadow: var(--shadow);
+  margin: auto;
 }
 .modal-close { position: absolute; top: 1rem; right: 1rem; color: var(--outline); padding: 0.25rem; border-radius: 0.5rem; }
 .modal-close:hover { background: var(--surface); }
