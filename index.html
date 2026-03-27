@@ -49,16 +49,42 @@
 </div>
 <!-- PAYMENT MODAL -->
 <div class="modal-overlay" id="payment-modal" style="display:none">
-    <div class="modal" style="text-align:left; max-width:480px;">
+    <div class="modal" style="text-align:left; max-width:480px; max-height:90vh; overflow-y:auto;">
         <button class="modal-close" onclick="closePaymentModal()"><span class="material-symbols-outlined">close</span></button>
-        <h2 style="margin-bottom:0.25rem;">Forma de Pagamento</h2>
-        <p style="margin-bottom:1.5rem;">Total: <strong id="payment-total-display">R$ 0,00</strong></p>
+        <h2 style="margin-bottom:0.25rem;">Finalizar Compra</h2>
+        <p style="margin-bottom:1.25rem;">Total: <strong id="payment-total-display">R$ 0,00</strong></p>
+
+        <!-- DADOS DO COMPRADOR -->
+        <div style="margin-bottom:1.25rem;">
+            <p style="font-weight:600;margin-bottom:0.75rem;font-size:0.95rem;">Seus dados</p>
+            <div class="form-group-pay">
+                <label for="buyer-name">Nome completo *</label>
+                <input type="text" id="buyer-name" placeholder="Seu nome completo" required>
+            </div>
+            <div class="form-group-pay">
+                <label for="buyer-email">E-mail *</label>
+                <input type="email" id="buyer-email" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group-pay">
+                <label for="buyer-whatsapp">WhatsApp *</label>
+                <input type="tel" id="buyer-whatsapp" placeholder="(00) 00000-0000" oninput="formatWhatsAppInput(this)" required>
+            </div>
+            <div class="form-group-pay">
+                <label for="buyer-address">Endereço completo *</label>
+                <input type="text" id="buyer-address" placeholder="Rua, número, bairro, cidade/UF" required>
+            </div>
+            <div class="form-group-pay">
+                <label for="buyer-cep">CEP *</label>
+                <input type="text" id="buyer-cep" placeholder="00000-000" oninput="formatCepInput(this)" maxlength="9" required>
+            </div>
+        </div>
 
         <!-- PIX (único método ativo) -->
         <div id="payment-pix" class="payment-detail" style="display:block">
             <div class="pix-box">
                 <span class="material-symbols-outlined" style="font-size:3rem;color:var(--primary)">qr_code_2</span>
-                <p style="margin:0.5rem 0 0.25rem;font-weight:600;">Chave PIX</p>
+                <p style="margin:0.5rem 0 0.25rem;font-weight:600;">Pagamento via PIX</p>
+                <p style="font-size:0.85rem;color:#666;margin-bottom:0.5rem;">Copie a chave e realize o pagamento. Após confirmar o pedido, você será redirecionado ao WhatsApp para enviar o comprovante.</p>
                 <div class="pix-key" id="pix-key-display">86998311260</div>
                 <button class="btn-ghost" style="margin-top:0.75rem;padding:0.4rem 1rem;font-size:0.85rem" onclick="copyPix()">
                     <span class="material-symbols-outlined" style="font-size:1rem">content_copy</span> Copiar chave
@@ -78,7 +104,7 @@
         <div class="modal-icon"><span class="material-symbols-outlined">check_circle</span></div>
         <h2>Pedido Confirmado!</h2>
         <p>Preparamos tudo com muito carinho para você.</p>
-        <p class="modal-sub">Em breve você receberá os detalhes no seu e-mail.</p>
+        <p class="modal-sub">O WhatsApp foi aberto para você enviar o comprovante de pagamento ao setor de vendas.</p>
         <button class="btn-primary full-width" onclick="closeCheckout()">Voltar à Loja</button>
     </div>
 </div>

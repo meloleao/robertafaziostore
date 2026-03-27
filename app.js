@@ -154,15 +154,70 @@ function formatExpiry(input) {
   input.value = v;
 }
 
-async function confirmOrder() {
-  const method = document.querySelector('input[name="payment-method"]')?.value || 'pix';
+function formatWhatsAppInput(input) {
+  let v = input.value.replace(/\D/g, '').slice(0, 11);
+  if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+  else if (v.length > 0) v = `(${v}`;
+  input.value = v;
+}
 
-  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const { error } = await _supabase.from('orders').insert([{ items: cart, total, payment_method: method }]);
+function formatCepInput(input) {
+  let v = input.value.replace(/\D/g, '').slice(0, 8);
+  if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+  input.value = v;
+}
+
+async function confirmOrder() {
+  const name    = document.getElementById('buyer-name')?.value.trim();
+  const email   = document.getElementById('buyer-email')?.value.trim();
+  const whatsapp= document.getElementById('buyer-whatsapp')?.value.trim();
+  const address = document.getElementById('buyer-address')?.value.trim();
+  const cep     = document.getElementById('buyer-cep')?.value.trim();
+
+  if (!name || !email || !whatsapp || !address || !cep) {
+    showToast('Preencha todos os campos obrigatórios!');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showToast('Informe um e-mail válido!');
+    return;
+  }
+
+  const method = document.querySelector('input[name="payment-method"]')?.value || 'pix';
+  const total  = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const { error } = await _supabase.from('orders').insert([{
+    items: cart, total, payment_method: method,
+    buyer_name: name, buyer_email: email, buyer_whatsapp: whatsapp,
+    buyer_address: address, buyer_cep: cep
+  }]);
   if (error) console.error('Erro ao salvar pedido:', error);
+
+  const itemsText = cart.map(i =>
+    `• ${i.name} x${i.qty} — R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`
+  ).join('\n');
+
+  const msg = `🛍️ *NOVO PEDIDO – Roberta Fazio*\n\n`
+    + `👤 *Dados do Cliente:*\n`
+    + `Nome: ${name}\n`
+    + `E-mail: ${email}\n`
+    + `WhatsApp: ${whatsapp}\n`
+    + `Endereço: ${address}\n`
+    + `CEP: ${cep}\n\n`
+    + `📦 *Itens do Pedido:*\n${itemsText}\n\n`
+    + `💰 *Total: R$ ${total.toFixed(2).replace('.', ',')}*\n`
+    + `💳 Pagamento: PIX – Chave: 86998311260\n\n`
+    + `Em breve enviarei o comprovante de pagamento.`;
+
+  const waUrl = `https://wa.me/5586998311260?text=${encodeURIComponent(msg)}`;
 
   closePaymentModal();
   document.getElementById('checkout-modal').style.display = 'flex';
+
+  setTimeout(() => { window.open(waUrl, '_blank'); }, 400);
 }
 
 function closeCheckout() {
