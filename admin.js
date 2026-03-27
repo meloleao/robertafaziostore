@@ -19,12 +19,9 @@ const productForm = document.getElementById('product-form');
 async function checkUser() {
   console.log('[Admin] Verificando sessão do usuário...');
   try {
-    const { data: { user }, error } = await _supabase.auth.getUser();
-    if (error) {
-      console.error('[Admin] Erro ao obter usuário:', error.message);
-      return;
-    }
-    
+    const { data: { session } } = await _supabase.auth.getSession();
+    const user = session?.user ?? null;
+
     if (user) {
       console.log('[Admin] Usuário autenticado:', user.email);
       currentUser = user;
@@ -34,6 +31,7 @@ async function checkUser() {
       loadProducts();
     } else {
       console.log('[Admin] Nenhum usuário logado.');
+      currentUser = null;
       loginSection.classList.remove('hidden');
       adminContent.classList.add('hidden');
     }
