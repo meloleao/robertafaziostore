@@ -227,9 +227,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .product-name {
   font-family: 'Be Vietnam Pro', sans-serif; font-size: 1rem; font-weight: 700;
-  color: var(--on-surface); margin-bottom: 0.4rem; flex: 1;
+  color: var(--on-surface); margin-bottom: 0.4rem;
 }
-.product-desc { font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: 1rem; }
+.product-desc { font-size: 0.82rem; color: var(--on-surface-variant); margin-bottom: 1rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.7rem; }
 .product-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
 .product-price { font-family: 'Be Vietnam Pro', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--primary); }
 .product-price-old { font-size: 0.85rem; color: var(--outline); text-decoration: line-through; }

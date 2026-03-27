@@ -543,7 +543,7 @@ function productCard(p) {
       <div class="product-info">
         <div class="product-cat">${{ prints: 'Pôster', canecas: 'Caneca', cursos: 'Curso', livro: 'Livro' }[p.category] || p.category}</div>
         <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc || ''}</div>
+        <div class="product-desc">${p.description || p.desc || ''}</div>
         <div class="product-footer">
           <div>
             ${p.oldPrice ? `<div class="product-price-old">R$ ${p.oldPrice.toFixed(2).replace('.', ',')}</div>` : ''}
