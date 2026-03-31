@@ -670,8 +670,204 @@ async function subscribeNewsletter(e) {
   e.target.reset();
 }
 
+// ─── QUIZ ─────────────────────────────────────────────────────────────────────
+
+const QUIZ_QUESTIONS = [
+  {
+    q: 'Em uma reunião com amigos, você geralmente...',
+    opts: [
+      { text: 'É o centro das atenções — contando histórias e fazendo todo mundo rir', t: 'S' },
+      { text: 'Fica ouvindo com atenção e mediando as conversas', t: 'F' },
+      { text: 'Assume a liderança e organiza o que vai acontecer', t: 'C' },
+      { text: 'Observa tudo em silêncio antes de se abrir com alguém', t: 'M' },
+    ]
+  },
+  {
+    q: 'Quando algo dá errado no seu dia, sua reação mais comum é:',
+    opts: [
+      { text: 'Esqueço rápido e já penso no próximo passo', t: 'S' },
+      { text: 'Aceito com calma e me adapto à nova situação', t: 'F' },
+      { text: 'Fico irritada e busco resolver com urgência', t: 'C' },
+      { text: 'Fico ruminando e analiso cada detalhe do que aconteceu', t: 'M' },
+    ]
+  },
+  {
+    q: 'Seus amigos e familiares te descrevem como:',
+    opts: [
+      { text: 'Divertida, animada e cheia de energia contagiante', t: 'S' },
+      { text: 'Confiável, paciente e sempre disponível para ouvir', t: 'F' },
+      { text: 'Determinada, forte e com opinião bem formada', t: 'C' },
+      { text: 'Inteligente, sensível e muito detalhista', t: 'M' },
+    ]
+  },
+  {
+    q: 'Na hora de tomar uma decisão importante, você:',
+    opts: [
+      { text: 'Decide rápido, guiada pela emoção e intuição', t: 'S' },
+      { text: 'Pesa os prós e contras ouvindo a opinião de todos', t: 'F' },
+      { text: 'Analisa os fatos e decide com firmeza e agilidade', t: 'C' },
+      { text: 'Pesquisa muito, mas pode travar na hora H', t: 'M' },
+    ]
+  },
+  {
+    q: 'O que mais te motiva no dia a dia?',
+    opts: [
+      { text: 'Novas experiências, pessoas e aventuras', t: 'S' },
+      { text: 'Harmonia, paz e relacionamentos saudáveis', t: 'F' },
+      { text: 'Conquistas, metas e superar desafios', t: 'C' },
+      { text: 'Entender o propósito profundo por trás de tudo', t: 'M' },
+    ]
+  },
+  {
+    q: 'Qual frase te representa mais?',
+    opts: [
+      { text: '"A vida é uma festa e eu quero aproveitar cada momento!"', t: 'S' },
+      { text: '"Tudo vai se resolver, só precisa de paciência e calma."', t: 'F' },
+      { text: '"Ou eu faço acontecer, ou não acontece."', t: 'C' },
+      { text: '"Prefiro fazer certo a fazer rápido."', t: 'M' },
+    ]
+  },
+];
+
+const QUIZ_RESULTS = {
+  S: {
+    name: 'Sanguínea',
+    emoji: '✨',
+    color: '#ffdad2',
+    textColor: '#9a402b',
+    traits: ['Carisma natural', 'Energia contagiante', 'Dom da comunicação', 'Criatividade'],
+    desc: 'Você irradia vida e alegria por onde passa. Pessoas ao seu redor se sentem acolhidas e animadas pela sua presença.',
+    teaser: 'Mas sua personalidade vai muito além da alegria. Há padrões ocultos no seu temperamento Sanguíneo que explicam por que você age de certas formas — especialmente nos relacionamentos e na espiritualidade.',
+  },
+  F: {
+    name: 'Fleumática',
+    emoji: '🌿',
+    color: '#b9ead5',
+    textColor: '#3a6756',
+    traits: ['Serenidade profunda', 'Dom da escuta', 'Diplomacia natural', 'Paciência'],
+    desc: 'Você é a âncora das pessoas que ama. Sua calma é um presente raro — e sua capacidade de ouvir transforma vidas.',
+    teaser: 'Mas por trás da sua paz existe um mundo interior muito mais complexo. O teste completo revela o que motiva (e trava) uma Fleumática — informações que poucos temperamentos carregam.',
+  },
+  C: {
+    name: 'Colérica',
+    emoji: '🔥',
+    color: '#ffe0b2',
+    textColor: '#7a3020',
+    traits: ['Liderança instintiva', 'Força de vontade', 'Foco em resultados', 'Coragem'],
+    desc: 'Você nasceu para liderar e transformar. Sua determinação é rara e sua capacidade de agir inspira todos ao redor.',
+    teaser: 'Mas a intensidade Colérica tem dois lados. O teste completo revela como transformar seus pontos de tensão em seu maior diferencial — e como isso impacta sua missão de vida.',
+  },
+  M: {
+    name: 'Melancólica',
+    emoji: '🌙',
+    color: '#e8d5f5',
+    textColor: '#5e2d8a',
+    traits: ['Profundidade emocional', 'Sensibilidade aguçada', 'Lealdade intensa', 'Perfeccionismo criativo'],
+    desc: 'Você sente tudo em profundidade. Sua riqueza interior e capacidade analítica são dons extraordinários e raros.',
+    teaser: 'Mas a Melancólica carrega um paradoxo único: quanto mais você se conhece, mais descobre. O teste completo desvenda os padrões que governam sua vida interior — e o propósito que só você pode cumprir.',
+  },
+};
+
+let quizAnswers = [];
+let quizCurrent = 0;
+
 function startQuiz() {
-  showToast('Quiz em breve! Fique ligada. ✨');
+  quizAnswers = [];
+  quizCurrent = 0;
+  document.getElementById('quiz-modal').style.display = 'flex';
+  renderQuizStep();
+}
+
+function closeQuiz() {
+  document.getElementById('quiz-modal').style.display = 'none';
+}
+
+function renderQuizStep() {
+  const total = QUIZ_QUESTIONS.length;
+  const q = QUIZ_QUESTIONS[quizCurrent];
+  const pct = Math.round((quizCurrent / total) * 100);
+  const selected = quizAnswers[quizCurrent];
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" style="width:${pct}%"></div>
+    </div>
+    <div class="quiz-step-label">Pergunta ${quizCurrent + 1} de ${total}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o, i) => `
+        <button class="quiz-option${selected === i ? ' selected' : ''}"
+          onclick="selectQuizOption(${i})">${o.text}</button>
+      `).join('')}
+    </div>
+    <div class="quiz-nav">
+      <button class="btn-ghost" onclick="quizBack()" style="${quizCurrent === 0 ? 'visibility:hidden' : ''}">
+        ← Voltar
+      </button>
+      <button class="btn-primary" id="quiz-next-btn"
+        onclick="quizNext()"
+        ${selected === undefined ? 'disabled style="opacity:0.4;cursor:not-allowed"' : ''}>
+        ${quizCurrent === total - 1 ? 'Ver meu resultado →' : 'Próxima →'}
+      </button>
+    </div>
+  `;
+}
+
+function selectQuizOption(idx) {
+  quizAnswers[quizCurrent] = idx;
+  renderQuizStep();
+}
+
+function quizBack() {
+  if (quizCurrent > 0) { quizCurrent--; renderQuizStep(); }
+}
+
+function quizNext() {
+  if (quizAnswers[quizCurrent] === undefined) return;
+  if (quizCurrent < QUIZ_QUESTIONS.length - 1) {
+    quizCurrent++;
+    renderQuizStep();
+  } else {
+    renderQuizResult();
+  }
+}
+
+function renderQuizResult() {
+  // Conta pontos por temperamento
+  const scores = { S: 0, F: 0, C: 0, M: 0 };
+  QUIZ_QUESTIONS.forEach((q, i) => {
+    const ansIdx = quizAnswers[i];
+    if (ansIdx !== undefined) scores[q.opts[ansIdx].t]++;
+  });
+
+  // Temperamento dominante
+  const dominant = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  const r = QUIZ_RESULTS[dominant];
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div style="text-align:center;margin-bottom:0.5rem;">
+      <div class="quiz-result-badge" style="background:${r.color}">
+        ${r.emoji}
+      </div>
+      <div class="quiz-result-title" style="color:${r.textColor}">Você é predominantemente</div>
+      <div class="quiz-result-title" style="color:${r.textColor};font-size:2rem">${r.name}!</div>
+    </div>
+    <div class="quiz-result-sub">${r.desc}</div>
+    <div class="quiz-traits">
+      ${r.traits.map(t => `<span class="quiz-trait">${t}</span>`).join('')}
+    </div>
+    <div class="quiz-teaser">
+      <p>🔒 <strong>Mas isso é só o começo...</strong></p>
+      <p>${r.teaser}</p>
+      <p style="font-size:0.82rem;color:#aaa;">O teste completo da Roberta Fázio revela seus subtemperamentos, padrões de relacionamento, missão de vida e muito mais.</p>
+    </div>
+    <div class="quiz-result-cta">
+      <button class="btn-primary full-width" onclick="closeQuiz();showPage('store')" style="margin-bottom:0.75rem;">
+        Quero o Teste Completo
+      </button>
+      <button class="btn-ghost full-width" onclick="closeQuiz()">Voltar à loja</button>
+    </div>
+  `;
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
