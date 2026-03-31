@@ -196,21 +196,32 @@ async function confirmOrder() {
   }]);
   if (error) console.error('Erro ao salvar pedido:', error);
 
-  const itemsText = cart.map(i =>
-    `• ${i.name} x${i.qty} — R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`
+  const itemsText = cart.map((i, idx) =>
+    `${idx + 1}. ${i.name}\n   Qtd: ${i.qty}  |  Valor: R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`
   ).join('\n');
 
-  const msg = `🛍️ *NOVO PEDIDO – Roberta Fazio*\n\n`
-    + `👤 *Dados do Cliente:*\n`
-    + `Nome: ${name}\n`
-    + `E-mail: ${email}\n`
-    + `WhatsApp: ${whatsapp}\n`
-    + `Endereço: ${address}\n`
-    + `CEP: ${cep}\n\n`
-    + `📦 *Itens do Pedido:*\n${itemsText}\n\n`
-    + `💰 *Total: R$ ${total.toFixed(2).replace('.', ',')}*\n`
-    + `💳 Pagamento: PIX – Chave: 439.748.644-15\n\n`
-    + `Em breve enviarei o comprovante de pagamento.`;
+  const divider = '━━━━━━━━━━━━━━━━━━━━━━';
+
+  const msg = `✨ *NOVO PEDIDO* ✨\n`
+    + `_Roberta Fazio – A Menina dos Temperamentos_\n`
+    + `${divider}\n\n`
+    + `👤 *DADOS DO CLIENTE*\n`
+    + `▸ *Nome:* ${name}\n`
+    + `▸ *E-mail:* ${email}\n`
+    + `▸ *WhatsApp:* ${whatsapp}\n`
+    + `▸ *Endereço:* ${address}\n`
+    + `▸ *CEP:* ${cep}\n\n`
+    + `${divider}\n\n`
+    + `🛒 *ITENS DO PEDIDO*\n`
+    + `${itemsText}\n\n`
+    + `${divider}\n\n`
+    + `💳 *PAGAMENTO*\n`
+    + `▸ Forma: PIX (CPF)\n`
+    + `▸ Chave: *439.748.644-15*\n\n`
+    + `💰 *TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`
+    + `${divider}\n\n`
+    + `📎 Por favor, envie o comprovante de pagamento nesta conversa para confirmarmos o seu pedido.\n\n`
+    + `_Obrigada pela sua compra! 🌸_`;
 
   const waUrl = `https://wa.me/5582991225240?text=${encodeURIComponent(msg)}`;
 
