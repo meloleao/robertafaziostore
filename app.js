@@ -278,7 +278,10 @@ function showToast(msg) {
 
 // ─── PAGE RENDER ──────────────────────────────────────────────────────────────
 
-function showPage(page) {
+const VALID_PAGES = ['home', 'store', 'about', 'book'];
+
+function showPage(page, pushHistory = true) {
+  if (!VALID_PAGES.includes(page)) page = 'home';
   currentPage = page;
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById(`page-${page}`).classList.add('active');
@@ -287,7 +290,18 @@ function showPage(page) {
   });
   window.scrollTo(0, 0);
   renderPage(page);
+
+  if (pushHistory) {
+    const url = page === 'home' ? '/' : `#${page}`;
+    history.pushState({ page }, '', url);
+  }
 }
+
+// Botões voltar/avançar do browser e mobile
+window.addEventListener('popstate', (e) => {
+  const page = e.state?.page || pageFromHash() || 'home';
+  showPage(page, false);
+});
 
 function renderPage(page) {
   const el = document.getElementById(`page-${page}`);
@@ -665,6 +679,15 @@ function startQuiz() {
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 
+function pageFromHash() {
+  const hash = location.hash.replace('#', '').trim();
+  return VALID_PAGES.includes(hash) ? hash : null;
+}
+
 loadProducts();
 renderCart();
-showPage('home');
+
+// Abre a página correta se houver hash na URL (ex: link direto ou reload)
+const initialPage = pageFromHash() || 'home';
+history.replaceState({ page: initialPage }, '', initialPage === 'home' ? location.pathname : `#${initialPage}`);
+showPage(initialPage, false);
