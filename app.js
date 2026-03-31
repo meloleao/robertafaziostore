@@ -212,7 +212,7 @@ async function confirmOrder() {
     + `💳 Pagamento: PIX – Chave: 439.748.644-15\n\n`
     + `Em breve enviarei o comprovante de pagamento.`;
 
-  const waUrl = `https://wa.me/5586998311260?text=${encodeURIComponent(msg)}`;
+  const waUrl = `https://wa.me/5582991225240?text=${encodeURIComponent(msg)}`;
 
   closePaymentModal();
   document.getElementById('checkout-modal').style.display = 'flex';
