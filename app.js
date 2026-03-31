@@ -283,8 +283,7 @@ function showPage(page, pushHistory = true) {
   renderPage(page);
 
   if (pushHistory) {
-    const url = page === 'home' ? '/' : `#${page}`;
-    history.pushState({ page }, '', url);
+    history.pushState({ page }, '', `#${page}`);
   }
 }
 
@@ -680,5 +679,5 @@ renderCart();
 
 // Abre a página correta se houver hash na URL (ex: link direto ou reload)
 const initialPage = pageFromHash() || 'home';
-history.replaceState({ page: initialPage }, '', initialPage === 'home' ? location.pathname : `#${initialPage}`);
+history.replaceState({ page: initialPage }, '', `#${initialPage}`);
 showPage(initialPage, false);
