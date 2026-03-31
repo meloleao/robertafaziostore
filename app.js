@@ -182,48 +182,29 @@ async function confirmOrder() {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    showToast('Informe um e-mail válido!');
+    showToast('Informe um e-mail v\u00E1lido!');
     return;
   }
 
   const method = document.querySelector('input[name="payment-method"]')?.value || 'pix';
   const total  = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
-  const buyerInfo = { name, email, whatsapp, address, cep };
-
-  // Tenta inserir com colunas dedicadas de comprador
-  let { error } = await _supabase.from('orders').insert([{
-    items: cart, total, payment_method: method,
-    buyer_name: name, buyer_email: email, buyer_whatsapp: whatsapp,
-    buyer_address: address, buyer_cep: cep
-  }]);
-
-  // Fallback: salva buyer_info como JSON caso as colunas não existam ainda
-  if (error) {
-    const result = await _supabase.from('orders').insert([{
-      items: cart, total, payment_method: method,
-      buyer_info: buyerInfo
-    }]);
-    if (result.error) {
-      // Último fallback: salva apenas os dados básicos do pedido
-      await _supabase.from('orders').insert([{ items: cart, total, payment_method: method }]);
-    }
-  }
-
+  // ── Monta a mensagem e a URL ANTES dos awaits ─────────────────────────────
+  // (mobile bloqueia window.open chamado após operações assíncronas)
   const itemsText = cart.map((i, idx) =>
     `${idx + 1}. ${i.name}\n   Qtd: ${i.qty}  |  Valor: R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`
   ).join('\n');
 
-  const divider = '━━━━━━━━━━━━━━━━━━━━━━';
+  const divider = '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501';
 
   const e = {
-    star:    '\u2728', // ✨
-    person:  '\uD83D\uDC64', // 👤
-    cart:    '\uD83D\uDED2', // 🛒
-    card:    '\uD83D\uDCB3', // 💳
-    money:   '\uD83D\uDCB0', // 💰
-    clip:    '\uD83D\uDCCE', // 📎
-    flower:  '\uD83C\uDF38', // 🌸
+    star:   '\u2728',
+    person: '\uD83D\uDC64',
+    cart:   '\uD83D\uDED2',
+    card:   '\uD83D\uDCB3',
+    money:  '\uD83D\uDCB0',
+    clip:   '\uD83D\uDCCE',
+    flower: '\uD83C\uDF38',
   };
 
   const msg = `${e.star} *NOVO PEDIDO* ${e.star}\n`
@@ -249,10 +230,29 @@ async function confirmOrder() {
 
   const waUrl = `https://wa.me/5582991225240?text=${encodeURIComponent(msg)}`;
 
-  closePaymentModal();
-  document.getElementById('checkout-modal').style.display = 'flex';
+  // ── Abre o WhatsApp AGORA (ainda dentro do gesto do usuário) ──────────────
+  window.location.href = waUrl;
 
-  setTimeout(() => { window.open(waUrl, '_blank'); }, 400);
+  // ── Salva o pedido no banco em segundo plano ───────────────────────────────
+  const buyerInfo = { name, email, whatsapp, address, cep };
+
+  let { error } = await _supabase.from('orders').insert([{
+    items: cart, total, payment_method: method,
+    buyer_name: name, buyer_email: email, buyer_whatsapp: whatsapp,
+    buyer_address: address, buyer_cep: cep
+  }]);
+
+  if (error) {
+    const r2 = await _supabase.from('orders').insert([{
+      items: cart, total, payment_method: method, buyer_info: buyerInfo
+    }]);
+    if (r2.error) {
+      await _supabase.from('orders').insert([{ items: cart, total, payment_method: method }]);
+    }
+  }
+
+  closePaymentModal();
+  cart = []; saveCart(); renderCart();
 }
 
 function closeCheckout() {
