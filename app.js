@@ -231,14 +231,21 @@ async function confirmOrder() {
   const waUrl = `https://wa.me/5582991225240?text=${encodeURIComponent(msg)}`;
 
   // ── Salva o pedido ANTES de redirecionar ──────────────────────────────────
-  // window.location.href navega e abandona a página — o insert deve ser feito
-  // antes. window.location.href (diferente de window.open) não é bloqueado
-  // por mobile mesmo após await, então a ordem correta é: salvar → redirecionar.
-  await _supabase.from('orders').insert([{
+  const btn = document.querySelector('#payment-modal .btn-primary');
+  if (btn) { btn.textContent = 'Salvando pedido...'; btn.disabled = true; }
+
+  const { error: insertError } = await _supabase.from('orders').insert([{
     items: cart, total, payment_method: method,
     buyer_name: name, buyer_email: email, buyer_whatsapp: whatsapp,
     buyer_address: address, buyer_cep: cep
   }]);
+
+  if (btn) { btn.textContent = 'Confirmar Pedido'; btn.disabled = false; }
+
+  if (insertError) {
+    alert('Erro ao registrar pedido: ' + insertError.message + '\n\nO WhatsApp será aberto mesmo assim.');
+    console.error('Insert error:', insertError);
+  }
 
   cart = []; saveCart(); renderCart();
 
