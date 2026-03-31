@@ -305,7 +305,7 @@ function renderOrdersTable(orders) {
   document.getElementById('orders-count-label').textContent = `${orders.length} pedido${orders.length !== 1 ? 's' : ''}`;
 
   if (orders.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:3rem;color:#aaa;">Nenhum pedido neste período.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:3rem;color:#aaa;">Nenhum pedido neste período.</td></tr>';
     return;
   }
 
@@ -332,6 +332,14 @@ function renderOrdersTable(orders) {
         <td style="white-space:nowrap;font-weight:700">R$ ${(o.total || 0).toFixed(2).replace('.', ',')}</td>
         <td>${payBadge}</td>
         <td><button class="btn-detail" onclick="showOrderDetail(${idx})">Ver</button></td>
+        <td class="actions">
+          <button class="btn-icon" title="Editar" onclick="openEditOrder(${idx})">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+          <button class="btn-icon btn-delete" title="Excluir" onclick="deleteOrder('${o.id}')">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </td>
       </tr>`;
   }).join('');
 
@@ -401,6 +409,73 @@ function closeOrderDetail() {
   document.getElementById('order-detail-modal').style.display = 'none';
 }
 
+// ─── ORDER EDIT / DELETE ──────────────────────────────────────────────────────
+
+let editingOrderId = null;
+
+function openEditOrder(idx) {
+  const o = window._filteredOrders[idx];
+  if (!o) return;
+  const buyer = getBuyer(o);
+  editingOrderId = o.id;
+
+  document.getElementById('edit-buyer-name').value    = o.buyer_name    || buyer.name    !== '–' ? (o.buyer_name    || buyer.name)    : '';
+  document.getElementById('edit-buyer-email').value   = o.buyer_email   || buyer.email   !== '–' ? (o.buyer_email   || buyer.email)   : '';
+  document.getElementById('edit-buyer-whatsapp').value= o.buyer_whatsapp|| buyer.whatsapp!== '–' ? (o.buyer_whatsapp|| buyer.whatsapp): '';
+  document.getElementById('edit-buyer-address').value = o.buyer_address || buyer.address !== '–' ? (o.buyer_address || buyer.address) : '';
+  document.getElementById('edit-buyer-cep').value     = o.buyer_cep     || buyer.cep     !== '–' ? (o.buyer_cep     || buyer.cep)     : '';
+  document.getElementById('edit-total').value         = o.total || '';
+  document.getElementById('edit-payment-method').value= o.payment_method || 'pix';
+  document.getElementById('edit-status').value        = o.status || 'pendente';
+
+  document.getElementById('order-edit-modal').style.display = 'flex';
+}
+
+function closeEditOrder() {
+  document.getElementById('order-edit-modal').style.display = 'none';
+  editingOrderId = null;
+}
+
+document.getElementById('order-edit-form').onsubmit = async (e) => {
+  e.preventDefault();
+  if (!editingOrderId) return;
+
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = 'Salvando...';
+  btn.disabled = true;
+
+  const updates = {
+    buyer_name:     document.getElementById('edit-buyer-name').value.trim(),
+    buyer_email:    document.getElementById('edit-buyer-email').value.trim(),
+    buyer_whatsapp: document.getElementById('edit-buyer-whatsapp').value.trim(),
+    buyer_address:  document.getElementById('edit-buyer-address').value.trim(),
+    buyer_cep:      document.getElementById('edit-buyer-cep').value.trim(),
+    total:          parseFloat(document.getElementById('edit-total').value),
+    payment_method: document.getElementById('edit-payment-method').value,
+    status:         document.getElementById('edit-status').value,
+  };
+
+  const { error } = await _supabase.from('orders').update(updates).eq('id', editingOrderId);
+
+  btn.textContent = 'Salvar Alterações';
+  btn.disabled = false;
+
+  if (error) {
+    alert('Erro ao salvar: ' + error.message);
+    return;
+  }
+
+  closeEditOrder();
+  await loadOrders();
+};
+
+async function deleteOrder(id) {
+  if (!confirm('Tem certeza que deseja excluir este pedido? Esta ação não pode ser desfeita.')) return;
+  const { error } = await _supabase.from('orders').delete().eq('id', id);
+  if (error) { alert('Erro ao excluir: ' + error.message); return; }
+  await loadOrders();
+}
+
 // ─── GLOBAL EXPORTS ──────────────────────────────────────────────────────────
 window.showTab          = showTab;
 window.editProduct      = openProductModal;
@@ -412,6 +487,9 @@ window.handleImageUpload = handleImageUpload;
 window.applyFinFilter   = applyFinFilter;
 window.showOrderDetail  = showOrderDetail;
 window.closeOrderDetail = closeOrderDetail;
+window.openEditOrder    = openEditOrder;
+window.closeEditOrder   = closeEditOrder;
+window.deleteOrder      = deleteOrder;
 
 productForm.onsubmit = handleProductSubmit;
 
