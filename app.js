@@ -189,12 +189,26 @@ async function confirmOrder() {
   const method = document.querySelector('input[name="payment-method"]')?.value || 'pix';
   const total  = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
-  const { error } = await _supabase.from('orders').insert([{
+  const buyerInfo = { name, email, whatsapp, address, cep };
+
+  // Tenta inserir com colunas dedicadas de comprador
+  let { error } = await _supabase.from('orders').insert([{
     items: cart, total, payment_method: method,
     buyer_name: name, buyer_email: email, buyer_whatsapp: whatsapp,
     buyer_address: address, buyer_cep: cep
   }]);
-  if (error) console.error('Erro ao salvar pedido:', error);
+
+  // Fallback: salva buyer_info como JSON caso as colunas não existam ainda
+  if (error) {
+    const result = await _supabase.from('orders').insert([{
+      items: cart, total, payment_method: method,
+      buyer_info: buyerInfo
+    }]);
+    if (result.error) {
+      // Último fallback: salva apenas os dados básicos do pedido
+      await _supabase.from('orders').insert([{ items: cart, total, payment_method: method }]);
+    }
+  }
 
   const itemsText = cart.map((i, idx) =>
     `${idx + 1}. ${i.name}\n   Qtd: ${i.qty}  |  Valor: R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`

@@ -214,9 +214,33 @@ async function loadOrders() {
     .from('orders')
     .select('*')
     .order('created_at', { ascending: false });
-  if (error) { console.error('Erro ao carregar pedidos:', error); return; }
+  if (error) {
+    console.error('Erro ao carregar pedidos:', error);
+    document.getElementById('orders-tbody').innerHTML =
+      `<tr><td colspan="7" style="text-align:center;padding:2rem;color:#c0392b;">
+        Erro ao carregar pedidos: ${error.message}
+      </td></tr>`;
+    return;
+  }
   allOrders = data || [];
   renderFinanceiro();
+}
+
+// Extrai dados do comprador de qualquer estrutura salva (colunas dedicadas, buyer_info JSON, ou vazio)
+function getBuyer(o) {
+  const b = o.buyer_info || {};
+  return {
+    name:     o.buyer_name     || b.name     || '–',
+    email:    o.buyer_email    || b.email    || '–',
+    whatsapp: o.buyer_whatsapp || b.whatsapp || '–',
+    address:  o.buyer_address  || b.address  || '–',
+    cep:      o.buyer_cep      || b.cep      || '–',
+  };
+}
+
+// Retorna apenas os itens do carrinho, ignorando metadados de comprador
+function getCartItems(o) {
+  return Array.isArray(o.items) ? o.items.filter(i => !i._buyer_info) : [];
 }
 
 function applyFinFilter() { renderFinanceiro(); }
@@ -289,19 +313,21 @@ function renderOrdersTable(orders) {
     const date = new Date(o.created_at);
     const dateStr = date.toLocaleDateString('pt-BR');
     const timeStr = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    const itemsSummary = Array.isArray(o.items)
-      ? o.items.map(i => `${i.name} ×${i.qty || 1}`).join(', ')
-      : '–';
-    const truncated = itemsSummary.length > 40 ? itemsSummary.slice(0, 40) + '…' : itemsSummary;
+    const buyer = getBuyer(o);
+    const cartItems = getCartItems(o);
+    const itemsSummary = cartItems.length > 0
+      ? cartItems.map(i => `${i.name} \u00D7${i.qty || 1}`).join(', ')
+      : '\u2013';
+    const truncated = itemsSummary.length > 40 ? itemsSummary.slice(0, 40) + '\u2026' : itemsSummary;
     const payBadge = o.payment_method === 'pix'
       ? '<span class="badge-status badge-pix">PIX</span>'
-      : `<span class="badge-status badge-card">${o.payment_method || '–'}</span>`;
+      : `<span class="badge-status badge-card">${o.payment_method || '\u2013'}</span>`;
 
     return `
       <tr>
         <td style="white-space:nowrap">${dateStr}<br><span style="font-size:0.78rem;color:#aaa">${timeStr}</span></td>
-        <td>${o.buyer_name || '<span style="color:#ccc">–</span>'}</td>
-        <td style="white-space:nowrap">${o.buyer_whatsapp || '<span style="color:#ccc">–</span>'}</td>
+        <td>${buyer.name !== '–' ? buyer.name : '<span style="color:#ccc">\u2013</span>'}</td>
+        <td style="white-space:nowrap">${buyer.whatsapp !== '–' ? buyer.whatsapp : '<span style="color:#ccc">\u2013</span>'}</td>
         <td style="font-size:0.82rem;color:#666;max-width:200px;overflow:hidden">${truncated}</td>
         <td style="white-space:nowrap;font-weight:700">R$ ${(o.total || 0).toFixed(2).replace('.', ',')}</td>
         <td>${payBadge}</td>
@@ -321,9 +347,11 @@ function showOrderDetail(idx) {
   const dateStr = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
   const timeStr = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-  const itemsHtml = Array.isArray(o.items) ? o.items.map(i => `
+  const buyer = getBuyer(o);
+  const cartItems = getCartItems(o);
+  const itemsHtml = cartItems.length > 0 ? cartItems.map(i => `
     <div class="order-item-row">
-      <span>${i.name} <span style="color:#aaa">×${i.qty || 1}</span></span>
+      <span>${i.name} <span style="color:#aaa">\u00D7${i.qty || 1}</span></span>
       <span style="font-weight:600">R$ ${((i.price || 0) * (i.qty || 1)).toFixed(2).replace('.', ',')}</span>
     </div>`).join('') : '<div class="order-item-row"><span style="color:#aaa">Sem itens</span></div>';
 
@@ -335,27 +363,27 @@ function showOrderDetail(idx) {
       </div>
       <div class="order-detail-item">
         <div class="od-label">Pagamento</div>
-        <div class="od-value">${o.payment_method?.toUpperCase() || '–'}</div>
+        <div class="od-value">${o.payment_method?.toUpperCase() || '\u2013'}</div>
       </div>
       <div class="order-detail-item">
         <div class="od-label">Nome</div>
-        <div class="od-value">${o.buyer_name || '–'}</div>
+        <div class="od-value">${buyer.name}</div>
       </div>
       <div class="order-detail-item">
         <div class="od-label">E-mail</div>
-        <div class="od-value">${o.buyer_email || '–'}</div>
+        <div class="od-value">${buyer.email}</div>
       </div>
       <div class="order-detail-item">
         <div class="od-label">WhatsApp</div>
-        <div class="od-value">${o.buyer_whatsapp || '–'}</div>
+        <div class="od-value">${buyer.whatsapp}</div>
       </div>
       <div class="order-detail-item">
         <div class="od-label">CEP</div>
-        <div class="od-value">${o.buyer_cep || '–'}</div>
+        <div class="od-value">${buyer.cep}</div>
       </div>
       <div class="order-detail-item" style="grid-column:1/-1">
-        <div class="od-label">Endereço</div>
-        <div class="od-value">${o.buyer_address || '–'}</div>
+        <div class="od-label">Endere\u00E7o</div>
+        <div class="od-value">${buyer.address}</div>
       </div>
     </div>
 
