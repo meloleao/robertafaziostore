@@ -548,7 +548,7 @@ function renderBook(el) {
           <div class="book-feat"><span class="material-symbols-outlined">local_shipping</span> Frete grátis para todo o Brasil</div>
           <div class="book-feat"><span class="material-symbols-outlined">verified</span> Editora: ${book.publisher} | ISBN: ${book.details.isbn13}</div>
         </div>
-        <div class="book-price">R$ ${book.price.toFixed(2).replace('.', ',')} <span>ou 3x sem juros</span></div>
+        <div class="book-price">R$ ${book.price.toFixed(2).replace('.', ',')}</div>
         <div style="display:flex;gap:1rem;flex-wrap:wrap">
           <button class="btn-primary" onclick="addToCart(99)">
             <span class="material-symbols-outlined" style="font-size:1rem">add_shopping_cart</span>
