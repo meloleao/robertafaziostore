@@ -139,7 +139,7 @@ function selectPayment(method, el) {
 }
 
 function copyPix() {
-  navigator.clipboard.writeText('86998311260')
+  navigator.clipboard.writeText('439.748.644-15')
     .then(() => showToast('Chave PIX copiada! ✓'));
 }
 
@@ -209,7 +209,7 @@ async function confirmOrder() {
     + `CEP: ${cep}\n\n`
     + `📦 *Itens do Pedido:*\n${itemsText}\n\n`
     + `💰 *Total: R$ ${total.toFixed(2).replace('.', ',')}*\n`
-    + `💳 Pagamento: PIX – Chave: 86998311260\n\n`
+    + `💳 Pagamento: PIX – Chave: 439.748.644-15\n\n`
     + `Em breve enviarei o comprovante de pagamento.`;
 
   const waUrl = `https://wa.me/5586998311260?text=${encodeURIComponent(msg)}`;
